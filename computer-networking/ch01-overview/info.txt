@@ -1,0 +1,43 @@
+
+The residential telephone line carries both data and traditional telephone signals
+  simultaneously, which are encoded at different frequencies:
+  
+• A high-speed downstream channel, in the 50 kHz to 1 MHz band
+• A medium-speed upstream channel, in the 4 kHz to 50 kHz band
+• An ordinary two-way telephone channel, in the 0 to 4 kHz band
+
+On the customer side, a splitter separates the data and telephone signals arriving to the home and 
+  forwards the data signal to the DSL modem. On the telco side, in the CO, the DSLAM separates the 
+  data and phone signals and sends the data into the Internet. Hundreds or even thousands of 
+  households connect to a single DSLAM.
+
+Although DSL and cable networks currently represent the majority of residential broadband access in 
+  the United States, an up-and-coming technology that provides even higher speeds is fiber to the 
+  home (FTTH) [Fiber Broadband 2020]. As the name suggests, the FTTH concept is simple—provide an 
+  optical fiber path from the CO directly to the home. FTTH can potentially provide Internet access 
+  rates in the gigabits per second range.
+
+Physical medium. The physical medium can take many shapes and forms and does not have to be of the 
+  same type for each transmitter-receiver pair along the path. Examples of physical media include 
+  twisted-pair copper wire, coaxial cable, multimode fiber-optic cable, terrestrial radio spectrum, 
+  and satellite radio spectrum. Physical media fall into two categories: guided media and unguided
+  media. With guided media, the waves are guided along a solid medium, such as a fiber-optic cable, 
+  a twisted-pair copper wire, or a coaxial cable. With unguided media, the waves propagate in the 
+  atmosphere and in outer space, such as in a wireless LAN or a digital satellite channel.
+
+Store-and-Forward Transmission
+  Most packet switches use store-and-forward transmission at the inputs to the links. Store-and-forward 
+  transmission means that the packet switch must receive the entire packet before it can begin to 
+  transmit the first bit of the packet onto the outbound link. 
+
+Comparing Transmission and Propagation Delay
+  Newcomers to the field of computer networking sometimes have difficulty understanding the 
+  difference between transmission delay and propagation delay. The difference is subtle but important. 
+  The transmission delay is the amount of time required for the router to push out the packet; it is a 
+  function of the packet’s length and the transmission rate of the link, but has nothing to do with the 
+  distance between the two routers. The propagation delay, on the other hand, is the time it takes a bit 
+  to propagate from one router to the next; it is a function of the distance between the two routers, 
+  but has nothing to do with the packet’s length or the transmission rate of the link.
+
+
+
