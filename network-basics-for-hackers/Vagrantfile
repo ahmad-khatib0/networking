@@ -1,0 +1,32 @@
+Vagrant.configure("2") do |config|
+  config.vm.box = "kalilinux/rolling"
+
+  config.ssh.forward_agent = true
+
+  # disable guest additions
+  config.vm.synced_folder '.', "/vagrant", disabled: true
+  
+  config.vm.define "kali" do |k|
+    k.vm.box      = "kalilinux/rolling"
+    k.vm.hostname = "kali"
+
+    k.vm.network "private_network", ip: "192.168.56.12"
+    k.vm.network "forwarded_port", guest: 80, host: 8802
+    k.vm.network "forwarded_port", guest: 443, host: 8445
+    
+    k.vm.provider "virtualbox" do |vb|
+      vb.name  = "kali"
+      vb.customize ["modifyvm" , :id, "--memory", 8192]
+      vb.customize ["modifyvm" , :id, "--cpus", 2]
+
+      # Hide the VirtualBox GUI when booting the machine
+      vb.gui = false
+    end
+  end
+
+  config.vm.provision "shell", inline: <<-EOF
+    sudo apt update
+    sudo apt install -y crowbar
+  EOF
+  
+end

@@ -1,0 +1,8 @@
+
+# to see all the ports open on a Metasploitable-2 system (an intentionally vulnerable Linux system )
+$ sudo nmap –sT <TARGET_IP>
+
+# scan for UDP nmap 
+$ nmap –sU <IP_Address>
+
+

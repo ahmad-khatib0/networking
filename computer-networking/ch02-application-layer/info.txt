@@ -84,6 +84,149 @@ Developers of Web browsers quickly discovered that sending all the objects in a 
   mechanisms to avoid HOL blocking.
 
 
+HTTP2 Response Message Prioritization and Server Pushing
+When a client sends concurrent requests to a server, it can prioritize the responses it is requesting by assigning a 
+  weight between 1 and 256 to each message. The higher number indicates higher priority. Using these weights, the server 
+  can send first the frames for the responses with the highest priority. In addition to this, the client also states each 
+  message’s dependency on other messages by specifying the ID of the message on which it depends.
+
+Another feature of HTTP/2 is the ability for a server to send multiple responses for a single client request. That is, 
+  in addition to the response to the original request, the server can push additional objects to the client, without 
+  the client having to request each one. This is possible since the HTML base page indicates the objects that will be 
+  needed to fully render the Web page. So instead of waiting for the HTTP requests for these objects, the server can 
+  analyze the HTML page, identify the objects that are needed, and send them to the client before receiving explicit
+  requests for these objects. Server push eliminates the extra latency due to waiting for the requests.
+
+HTTP/3
+  QUIC, is a new “transport” protocol that is implemented in the application layer over the bare-bones UDP protocol. 
+  QUIC has several features that are desirable for HTTP, such as message multiplexing (interleaving), per-stream flow 
+  control, and low-latency connection establishment. HTTP/3 is yet a new HTTP protocol that is designed to operate over 
+  QUIC. As of 2020, HTTP/3 is described in Internet drafts and has not yet been fully standardized. Many of the HTTP/2 
+  features (such as message interleaving) are subsumed by QUIC, allowing for a simpler, streamlined design for HTTP/3.
+
+SMTP
+  it restricts the body (not just the headers) of all mail messages to simple 7-bit ASCII. This restriction made sense in 
+  the early 1980s when transmission capacity was scarce and no one was e-mailing large attachments or large image, audio, 
+  or video files. But today, in the multimedia era, the 7-bit ASCII restriction is a bit of a pain—it requires binary 
+  multimedia data to be encoded to ASCII before being sent over SMTP; and it requires the corresponding ASCII message 
+  to be decoded back to binary after SMTP transport
+  It is important to observe that SMTP does not normally use intermediate mail servers for sending mail, even when 
+  the two mail servers are located at opposite ends of the world (so one TCP connection)
+
+Today, there are two common ways for Bob to retrieve his e-mail from a mail server. If Bob is using Web-based e-mail or 
+  a smartphone app (such as Gmail), then the user agent will use HTTP to retrieve Bob’s e-mail. This case requires Bob’s 
+  mail server to have an HTTP interface as well as an SMTP interface (to communicate with Alice’s mail server). The 
+  alternative method, typically used with mail clients such as Microsoft Outlook, is to use the Internet Mail Access 
+  Protocol (IMAP) defined in RFC 3501.
+
+The DNS is 
+  (1) a distributed database implemented in a hierarchy of DNS servers, and 
+  (2) an application-layer protocol that allows hosts to query the distributed database. 
+  The DNS servers are often UNIX machines running the Berkeley Internet Name Domain (BIND) software [BIND 2020]. 
+  The DNS protocol runs over UDP and uses port 53.
+
+
+Host aliasing. A host with a complicated hostname can have one or more alias names. For example, a hostname such as 
+  relay1.west-coast.enterprise.com could have, say, two aliases such as enterprise.com and www.enterprise.com. In this 
+  case, the hostname relay1.west-coast.enterprise.com is said to be a canonical hostname. Alias hostnames, when present, 
+  are typically more mnemonic than canonical hostnames. DNS can be invoked by an application to obtain the canonical 
+  hostname for a supplied alias hostname as well as the IP address of the host.
+
+Mail server aliasing. For obvious reasons, it is highly desirable that e-mail addresses be mnemonic. For example, if Bob 
+  has an account with Yahoo Mail, Bob’s e-mail address might be as simple as bob@yahoo.com. However, the hostname of the 
+  Yahoo mail server is more complicated and much less mnemonic than simply yahoo.com (for example, the canonical hostname 
+  might be something like relay1.west-coast.yahoo.com). DNS can be invoked by a mail application to obtain the canonical 
+  hostname for a supplied alias hostname as well as the IP address of the host. In fact, the MX record permits a 
+  company’s mail server and Web server to have identical (aliased) hostnames; for example, a company’s Web server and 
+  mail server can both be called enterprise.com.
+
+Load distribution. DNS is also used to perform load distribution among replicated servers, such as replicated Web servers. 
+  Busy sites, such as cnn.com, are replicated over multiple servers, with each server running on a different end system 
+  and each having a different IP address. For replicated Web servers, a set of IP addresses is thus associated with one 
+  alias hostname The DNS database contains this set of IP addresses. When clients make a DNS query for a name mapped to a
+  set of addresses, the server responds with the entire set of IP addresses, but rotates the ordering of the addresses 
+  within each reply. Because a client typically sends its HTTP request message to the IP address that is listed first in 
+  the set, DNS rotation distributes the traffic among the replicated servers. DNS rotation is also used for e-mail so 
+  that multiple mail servers can have the same alias name 
+
+All DNS query and reply messages are sent within UDP datagrams to port 53. After a delay, ranging from milliseconds 
+  to seconds, DNS in the user’s host receives a DNS reply message that provides the desired mapping
+
+There are three classes of DNS servers—root DNS servers, top-level domain (TLD) DNS servers, and authoritative DNS servers
+
+Root DNS servers. There are more than 1000 root servers instances scattered all over the world, These root servers are 
+  copies of 13 different root servers, managed by 12 different organizations, and coordinated through the Internet 
+  Assigned Numbers Authority [IANA 2020]. The full list of root name servers, along with the organizations that manage them 
+  and their IP addresses can be found at [Root Servers 2020]. Root name servers provide the IP addresses of the TLD servers.
+
+Top-level domain (TLD) servers. For each of the top-level domains—top-level domains such as com, org, net, edu, and gov, 
+  and all of the country top-level domains such as uk, fr, ca, and jp—there is TLD server (or server cluster). The company 
+  Verisign Global Registry Services maintains the TLD servers for the com top-level domain, and the company Educause 
+  maintains the TLD servers for the edu top-level domain. The network infrastructure supporting a TLD can be large and 
+  complex; see [Osterweil 2012] for a nice overview of the Verisign net- work. See [TLD list 2020] for a list of all 
+  top-level domains. TLD servers provide the IP addresses for authoritative DNS servers.
+
+Authoritative DNS servers. Every organization with publicly accessible hosts (such as Web servers and mail servers) on 
+  the Internet must provide publicly accessible DNS records that map the names of those hosts to IP addresses. An 
+  organization’s authoritative DNS server houses these DNS records. An organization can choose to implement its own 
+  authoritative DNS server to hold these records; alternatively, the organization can pay to have these records stored in an
+  authoritative DNS server of some service provider. Most universities and large companies implement and maintain their 
+  own primary and secondary (backup) authoritative DNS server.
+
+DNS Records and Messages
+  A resource record is a four-tuple that contains the following fields: (Name, Value, Type, TTL)
+  The meaning of Name and Value depend on Type:
+If Type=A, then Name is a hostname and Value is the IP address for the host- name. Thus, a Type A record provides the 
+  standard hostname-to-IP address mapping. As an example, (relay1.bar.foo.com, 145.37.93.126, A) is a Type A record.
+  
+If Type=NS, then Name is a domain (such as foo.com) and Value is the hostname of an authoritative DNS server that knows 
+  how to obtain the IP addresses for hosts in the domain. This record is used to route DNS queries further along in
+  the query chain. As an example, (foo.com, dns.foo.com, NS) is a Type NS record.
+  
+If Type=CNAME, then Value is a canonical hostname for the alias hostname Name. This record can provide querying hosts 
+  the canonical name for a hostname. As an example, (foo.com, relay1.bar.foo.com, CNAME) is a CNAME record.
+
+If Type=MX, then Value is the canonical name of a mail server that has an alias hostname Name. As an example, 
+  (foo.com, mail.bar.foo.com, MX) is an MX record. MX records allow the hostnames of mail servers to have simple aliases. 
+  Note that by using the MX record, a company can have the same aliased name for its mail server and for one of its other 
+  servers (such as its Web server). To obtain the canonical name for the mail server, a DNS client would query for an MX 
+  record; to obtain the canonical name for the other server, the DNS client would query for the CNAME record.
 
 
 
+The semantics of the various fields in a DNS message are as follows:
+The first 12 bytes is the header section, which has a number of fields. The first field is a 16-bit number that identifies 
+  the query. This identifier is copied into the reply message to a query, allowing the client to match received replies 
+  with sent queries. There are a number of flags in the flag field. A 1-bit query/reply flag indi- cates whether the message 
+  is a query (0) or a reply (1). A 1-bit authoritative flag is set in a reply message when a DNS server is an authoritative 
+  server for a queried name. A 1-bit recursion-desired flag is set when a client (host or DNS server) desires that the DNS 
+  server perform recursion when it doesn’t have the record. A 1-bit recursion-available field is set in a reply if the DNS 
+  server supports recursion. In the header, there are also four number-of fields. These fields indicate the number of 
+  occurrences of the four types of data sections that follow the header. 
+ 
+The question section contains information about the query that is being made. This section includes 
+  (1) a name field that contains the name that is being queried, and 
+  (2) a type field that indicates the type of question being asked about the name for example, a host address 
+      associated with a name (Type A) or the mail server for a name (Type MX).
+
+In a reply from a DNS server, the answer section contains the resource records for the name that was originally queried. 
+  Recall that in each resource record there is the Type (for example, A, NS, CNAME, and MX), the Value, and the TTL. A 
+  reply can return multiple RRs in the answer, since a hostname can have multiple IP addresses (i.e for replicated Web servers).
+
+The authority section contains records of other authoritative servers.
+
+The additional section contains other helpful records. For example, the answer field in a reply to an MX query contains a 
+  resource record providing the canonical hostname of a mail server. The additional section contains a Type A record
+  providing the IP address for the canonical hostname of the mail server.
+
+
+Prior to 1999, a single registrar, Network Solutions, had a monopoly on domain name registration for com, net, and org 
+  domains. But now there are many registrars competing for customers, and the Internet Corporation for Assigned Names and 
+  Numbers (ICANN) accredits the various registrars. A complete list of accredited registrars is available at internic.net.
+
+IN P2P file distribution, each peer can redistribute any portion of the file it has received to any other peers, thereby 
+  assisting the server in the distribution process. As of 2020, the most popular P2P file distribution protocol is 
+  BitTorrent. Originally developed by Bram Cohen, there are now many different independent BitTorrent clients conforming 
+  to the BitTorrent protocol, just as there are a number of Web browser clients that conform to the HTTP protocol.
+
+ 
