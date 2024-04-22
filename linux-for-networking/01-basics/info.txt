@@ -1,0 +1,32 @@
+
+# using:  $ ip route
+
+From the output, we see that we have a default route pointing to 192.168.122.1. The default route is just 
+  that – if a packet is being sent to a destination that isn't in the routing table, the host will send that 
+  packet to its default gateway. The routing table will always prefer the "most specific" route – the route 
+  that most closely matches the destination IP. If there is no match, then the most specific route goes to 
+  the default gateway, which routes to 0.0.0.0 0.0.0.0 (in other words, the "if it doesn't match anything 
+  else" route). The host assumes that the default gateway IP belongs to a router, which will (hopefully) then
+  know where to send that packet next.
+  We also see a route to 169.254.0.0/16. This is called a Link-Local Address as defined in the RFC 3927
+
+Link-Local Addresses only operate in the current subnet – if a host does not have a statically configured IP 
+  address, and DHCP does not assign and address, it will use the first two octets defined in the RFC ( 169.254), 
+  then compute the last two octets, semi-randomly assigning them. After a Ping/ARP test  to ensure that this 
+  computed address is in fact available, the host is ready to communicate. This address is supposed to only 
+  communicate with other LLA addresses on the same network segment, typically using broadcast and multicast 
+  protocols such as ARP, Alljoyn, and so on to "find" each other. Just for clarity, these addresses are almost 
+  never used on real networks, they're the address that gets used if there is absolutely no other alternative. 
+  And just for confusion, Microsoft calls these addresses something different – Automatic Private Internet 
+  Protocol Addressing (APIPA).
+
+Finally, we see a route to the local subnet, in this case 192.168.122.0/24. This is called a connected route 
+  (since it's connected to that interface). This tells the host that no
+  routing is needed to communicate with other hosts in its own subnet.
+  
+This set of routes is very common in simple networks – a default gateway, a local segment,
+  and that's it. In many operating systems you won't see the 169.254.0.0 subnet unless
+  the host is actually using a link-local address.
+
+
+

@@ -1,0 +1,36 @@
+
+Why Sub-netting?
+  Sub-netting lets network administrators use the 32 bits in IPv4 IP address space more efficiently. 
+  They can create sub-nets within a Class A, B, or C network. This enables the administrator to create 
+  networks with more realistic host numbers.
+  Sub-netting provides a flexible way to designate which portion of the IP address represents the host IP and 
+  which portion represents the network ID. In addition, even if a single organization has thousands of devices, 
+  they don't want them all running on the same network ID. The network would slow dramatically. By dividing up 
+  the network, you can have different physical networks and broadcast domains.
+
+Sub-nets
+  A subnet is a network within a network, namely a Class A, B, or C. Subnets are created by using one or more 
+  of the host bits to extend the network ID. As you know, Class A networks have an 8-bit network ID, Class B 
+  has a standard 16-bit network ID, and Class C has a standard 24-bit network ID. Subnetting enables us 
+  to create network ID's of any size.
+
+A network mask, 
+  or netmask, is a binary mask that is applied to an IP address to determine whether two IP addresses are in 
+  the same subnet. A network mask works by applying binary AND operations between the IP address and the mask.
+  
+Sub-Net Masks
+  Subnet masks use the 32-bit structure of the IP address. The subnet mask tells us which bits are
+  for the Network ID and which bits are for the host ID. When the subnet mask bit is set to one,
+  this means it is part of the network. A bit marked as zero is part of the host ID
+
+CIDR Notation
+  CIDR, or Classless Inter-Domain Routing notation, is a way of representing an IP address and
+  the network mask associated with it. CIDR notation specifies an IP address, a slash (/), and a
+  decimal number such as 192.168.1.0/24, where the 24 represents the number of bits in the
+  network mask. Of course, the number of bits can vary depending on the number of sub-nets.
+
+Network Sniffers
+  A network sniffer—sometimes referred to as a packet analyzer, protocol analyzer, or network
+  traffic analyzer—can intercept and analyze network traffic that traverses a digital network
+
+

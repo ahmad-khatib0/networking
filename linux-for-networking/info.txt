@@ -1,0 +1,51 @@
+
+CentOS started as a free, community-supported version of Linux that was functionally compatible with the Red 
+  Hat Enterprise version. This made it very popular for server implementations in many organizations. In 
+  January 2014, Red Hat pulled CentOS into its fold, becoming a formal sponsor of the distro. In late 2020, 
+  it was announced that CentOS would no longer be maintained as a RHEL-compatible distribution but would rather 
+  "fit" somewhere between Fedora and RHEL – not so new as to be "bleeding edge," but not as stable as RHEL 
+  either. As part of this change, CentOS was renamed CentOS Stream.
+
+Oracle/Scientific Linux
+  Oracle/Scientific Linux is also seen in many data centers (and in Oracle's cloud offerings). Oracle Linux 
+  is based on Red Hat, and they advertise their product as being fully compatible with RHEL. Oracle Linux is 
+  free to download and use, but support from Oracle is subscription-based.
+
+Most commercial Network-attached Storage (NAS) and SAN providers are based on Linux or BSD. The front runner 
+  on open source NAS/SAN services, at the time of writing, seems to be TrueNAS (formerly FreeNAS) and XigmaNAS 
+  (formerly NAS4Free). Both have free and commercial offerings.
+
+Open source firewalls
+  Networking and security companies offer a wide variety of firewall appliances, most of which are based on 
+  Linux or BSD. Many companies do offer free firewalls, some of the more popular being pfSense (free versions 
+  and pre-built hardware solutions available), OPNsense (freely available, with donations), and Untangle 
+  (which also has a commercial version). Smoothwall is another alternative, with both free and commercial 
+  versions available.
+
+SIFT
+  SIFT is a distribution authored by the forensics team at the SANS institute, focused on
+  digital forensics and incident response tools and investigations. Similar to Kali, the goal of
+  SIFT is to be a "one-stop shop" for free/open source tools in one field – Digital Forensics
+  and Incident Response (DFIR). Historically, this was a distribution based on Ubuntu, but
+  in recent years, this has changed – SIFT is now also distributed as a script that installs the
+  tools on Ubuntu desktop or Windows Services for Linux (which is Ubuntu-based).
+
+Security Onion
+  Security Onion is also similar to Kali Linux in that it contains several information security
+  tools, but its focus is more from the defender's point of view. This distribution is centered
+  on threat hunting, network security monitoring, and log management. Some of the tools
+  in this distribution include Suricata, Zeek, and Wazuh, just to name a few.
+
+Virtualization
+  Virtualization has played a major role in the adoption of Linux and the ability to work
+  with multiple distributions at once. With a local hypervisor, a network professional can
+  run dozens of different "machines" on their laptop or desktop computers. While VMware
+  was the pioneer in this space (desktop and dedicated virtualization), they have since been
+  joined by Xen, KVM, VirtualBox, and QEMU, just to name a few. While the VMware
+  products are all commercial products (except for VMware Player), the other solutions
+  listed are, at the time of writing, still free. VMware's flagship hypervisor, ESXi, is also
+  available for free as a standalone product.
+
+
+
+

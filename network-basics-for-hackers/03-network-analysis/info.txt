@@ -1,0 +1,12 @@
+Prerequisites to Sniffing
+  It's critical to point out that to effectively use a network sniffer, your network interface card (NIC) should
+  be in promiscuous mode. This means that your NIC picks up ANY packet traversing the network. Usually, 
+  NICs only pick up packets that are intended for their particular MAC (globally unique physical) address.
+  The other critical point to understand with network sniffing is that the standard file format for sniffing is
+  .pcap (packet capture). This means your system must have a library (a bit of reusable code) to put the
+  packets in this format. These libraries are libpcap on your Linux system or Winpcap on Windows system.
+
+
+
+
+

@@ -1,0 +1,9 @@
+
+# display network info 
+$ ip ad        # or -4 (v4), r (for routing)
+$ ifconfig     # same as ip but its legacy
+
+# also show the current set of routes (legacy)
+$ netstat -rn 
+
+
