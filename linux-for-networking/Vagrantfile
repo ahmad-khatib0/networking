@@ -1,0 +1,36 @@
+# -*- mode: ruby -*-
+# vi: set ft=ruby :
+
+Vagrant.configure(2) do |cfg|
+  boxes = [
+    {
+      name: 'linux-for-networking',
+      ip: '192.168.56.20',
+      pub_ip: '192.168.56.21',
+      image: 'bento/ubuntu-22.04',
+      cpus: 2, memory: 4096
+    }
+  ]
+
+  cfg.ssh.forward_agent = true
+
+  boxes.each do |box|
+    cfg.vm.define box[:name] do |b|
+      b.vm.box = box[:image]
+      b.vm.hostname = box[:name]
+      b.vm.network 'private_network', ip: box[:ip]
+      # b.vm.network 'public_network', ip: box[:pub_ip]
+      b.vm.synced_folder '.', '/vagrant', disabled: true
+
+      b.vm.provider :virtualbox do |vb|
+        vb.gui = false
+        vb.name = box[:name]
+        vb.customize ['modifyvm', :id, '--memory', box[:memory]]
+        vb.customize ['modifyvm', :id, '--audio', 'none']
+        vb.customize ['modifyvm', :id, '--cpus', box[:cpus]]
+      end
+
+      b.vm.provision 'shell', path: './00-provision/ubuntu.sh' if box[:name] == 'linux-for-networking'
+    end
+  end
+end

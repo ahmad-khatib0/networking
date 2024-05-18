@@ -28,5 +28,76 @@ This set of routes is very common in simple networks – a default gateway, a lo
   and that's it. In many operating systems you won't see the 169.254.0.0 subnet unless
   the host is actually using a link-local address.
 
+A multicast address is used to include several devices in a conversation. For instance, you might use a multicast 
+  address to send an identical video stream to a number of network-attached displays, or if you were setting 
+  up a conference call or meeting in a voice/video application
+
+The full list of well know, registered multicast addresses is maintained by the IANA (Internet Assigned Numbers Authority), 
+  at https://www.iana.org/assignments/multicast-addresses/multicast-addresses.xhtml. While this may seem 
+  comprehensive, vendors will often create their own multicast addresses in this address space.
+
+Assigning an IP address to an interface
+$ sudo nmcli connection modify "Wired connection 1" ipv4.addresses 192.168.122.22/24
+$ sudo nmcli connection modify "Wired connection 1" ipv4.gateway 192.168.122.1
+$ sudo nmcli connection modify "Wired connection 1" ipv4.dns "8.8.8.8"
+$ sudo nmcli con mod "Wired connection 1" ipv4.method manual 
+### Now, let's save the changes and make them "live":
+$ sudo nmcli connection up "Wired connection 1"
+### Connection successfully activated (D-Bus active path: /org/freedesktop/NetworkManager/ActiveConnection/5)
+
+To change the DNS servers, edit /etc/resolv.conf and change the nameserver line to reflect the desired server IP:
+###   nameserver 8.8.8.8
+
+To change the IP address, subnet mask, and so on, edit the /etc/sysconfig/network-scripts/ifcfg-eth0 
+  file and update the values as follows:
+###   DEVICE=eth0
+###   BOOTPROTO=none
+###   ONBOOT=yes
+###   NETMASK=255.255.255.0
+###   IPADDR=10.0.1.27
+
+If your default gateway is on this interface, you can add this:
+GATEWAY=192.168.122.1
+
+
+== Adding a route: To add a temporary static route, the ip command is our go-to again. In this example, 
+   we tell our host to route to 192.168.122.10 to get to the 10.10.10.0/24 network:
+###  sudo ip route add 10.10.10.0/24 via 192.168.122.10
+
+This just adds a temporary route, though, which will not survive if the host is restarted or if the network 
+  processes are restarted. You can add a permanent static route by using the nmcli command.
+### sudo nmcli connection modify "Wired connection1" +ipv4.routes "10.10.11.0/24 192.168.122.11"
+### sudo nmcli connection up "Wired connection 1"
+
+== Adding a route using legacy approaches
+### sudo route add –net 10.10.12.0 netmask 255.255.255.0 gw 192.168.122.12
+-- On an older Debian/Ubuntu distribution, a common method is to edit the /etc/ network/interfaces file 
+   to make this changes permanent, add the following line:
+### up route add –net 10.10.12.0 netmask 255.255.255.0 gw 192.168.122.12
+-- Or, on an older Redhat family distribution, edit the /etc/sysconfig/network-scripts/route-<device name> 
+   file and add the following line:
+### 10.10.12.0/24 via 192.168.122.12
+
+== Disabling and enabling an interface
+### sudo ip link set ens33 down    # and up for enabling 
+### sudo ifconfig ens33 down       # legacy way 
+
+
+At the other end of the spectrum, you'll also often see situations where smaller packets are needed. This is 
+  particularly important as not all hosts will detect this well, and many applications will set the DF 
+  (Don't Fragment) bit in their traffic. In that situation, you might see a 1,500-byte packet set with DF on a 
+  medium that might only support a 1,380-byte packet – in that case, the application will simply fail, and 
+  often the error messages won't be helpful in troubleshooting. Where might you see this? Any link that involves
+  packets being encapsulated will usually involve this – tunnels or VPN solutions, for instance. These will 
+  reduce the frame size (and resulting packet size) by the overhead caused by encapsulation, which is usually 
+  pretty easy to compute. Satellite links are another common situation. They'll often default to 512-byte 
+  frames – in those situations, the sizes will be published by the service provider.
+
+== Increase MTU (Message Transfer Unit) packet size   
+### sudo nmcli con mod "Wired connection 1" 802-3-ethernet.mtu 9000
+### sudo nmcli connection up "Wired connection 1"
+
+== Interactive nmcli 
+### nmcli connection edit type ethernet
 
 
