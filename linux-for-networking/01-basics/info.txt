@@ -101,3 +101,90 @@ At the other end of the spectrum, you'll also often see situations where smaller
 ### nmcli connection edit type ethernet
 
 
+
+
+*****************************************************************************
+*****************************************************************************
+*****************************************************************************
+
+the OSI model: 
+== Layers 1-3 are often referred to as the media or network layers, whereas layers 4-7 are
+  generally called the host or application layers:
+
+== What is the MAC address though? It's a 12-digit (6-byte/48-bit) address, normally shown in hexadecimal.
+  When displayed, each byte or double-byte is usually separated by . or -. So typical MAC addresses might be 
+  00-0c-29-3b-73-cb or 9a93.5d84.5a69 (showing both common representations).
+
+== at the start of a TCP conversation you'll see the sending station send a broadcast (a request sent to all 
+   stations in the subnet) ARP request saying who has IP address x.x.x.x. The ARP reply from the host that has 
+   that address will include That's me, and my MAC address is aaaa.bbbb.cccc. If the target IP address is on 
+   a different subnet, the sender will "ARP for" the gateway for that subnet (which will usually be the 
+   default gateway, unless there are local routes defined).
+
+== The ARP request is cached on each host in an ARP cache or ARP table, which can be
+   displayed using the arp command:    arp -a
+   =>> (192.168.122.138) at f0:ef:86:0f:5d:70 [ether] on ens33
+   You can see this is pretty simple. It just relates the Layer 3 IP address to the Layer 2
+   MAC address to the Layer 1 Network Interface Card (NIC). 
+   
+==  the matching MAC address table on switches (commonly called the CAM table) is normally at 5 minutes, and 
+    the ARP table on routers is normally 14,400 seconds (4 hours). These values are all about resources. In
+    aggregate, workstations have the resources to frequently send ARP packets. The switches learn MAC addresses 
+    from traffic (including ARP requests and replies), so having that timer be slightly longer than the workstation 
+    timer makes sense. Similarly, having a lengthy ARP cache timer on routers conserves its CPU and NIC resources
+
+== the /proc directory in Linux is a "virtual" directory of files that contain the current settings and 
+   statuses of various things on your Linux host. These are not "real" files, but they are represented as 
+   files so we can use the same commands that we use for files: cat, grep, cut, sort, awk, and so on. You 
+   can look at network interface errors and values, such as in /proc/net/dev, for instance (note how things 
+   don't quite line up correctly in this listing)
+
+== Legitimate reasons to change a MAC address might include the following:
+• You have migrated a firewall and the ISP has your MAC hardcoded.
+• You have migrated a host or host NIC, and the upstream router isn't accessible to you, but you can't
+  wait 4 hours for the ARP cache to expire on that router.
+• You have migrated a host, and there is a DHCP reservation for the old MAC address
+  that you need to use, but you don't have access to "fix" that DHCP entry.
+• Apple devices will change their wireless MAC addresses for privacy reasons. Given how many other 
+  (and easier) methods there are to track a person's identity, this protection isn't usually that effective.
+  
+== Malicious reasons to change a MAC address include the following:
+•  You are attacking a wireless network, and have figured out that once authenticated,
+   the only checks that the access point does are against the client MAC addresses.
+•  The same as the previous point, but against an Ethernet network that's secured with 802.1x authentication, 
+   but with an insecure or incomplete configuration (we'll get into this in more detail in a later chapter).
+•  You are attacking a wireless network that has MAC address permissions on it.
+
+== The leading bits of each MAC address are supposed to identify the manufacturer – this value is called the 
+   OUI. OUIs are registered with the formal registry maintained by the IEEE and posted at 
+   http://standards-oui.ieee.org/oui.txt. However, the Wireshark project maintains a more complete listing, 
+   located at https://gitlab.com/wireshark/wireshark/-/raw/master/manuf. Wireshark also offer a lookup web 
+   application for this listing at https://www.wireshark.org/tools/oui-lookup.html.
+
+Normally a MAC address is split equally, with the first 3 bytes (6 characters) being allocated to the OUI, 
+  and the last 3 bytes being allocated to uniquely identify the device. However, organizations are able to 
+  purchase longer OUIs (for a lower fee), which give them fewer device addresses to allocate.
+
+The first 1,024 ports (numbered 0-1023) are almost never used as source ports – these are designated 
+  specifically as server ports, and need root privileges to work with. Ports in the range of 1024-49151 are 
+  designated "user ports" and 49152-65535 are dynamic or private ports. Servers are not however forced to use 
+  ports numbered below 1024 though (almost every database server for instance uses port numbers above 1024), 
+  and this is just a historical convention that dates back to when TCP and UDP were being developed and
+  all server ports were below 1024
+
+== A full listing of the ports that are formally assigned is maintained by the IANA, and is posted at 
+   https://www.iana.org/assignments/service-names-port-numbers/service-names-port-numbers.xhtml.
+
+== The TCP three-way handshake: 
+1- The first packet comes from the client from an ephemeral port, to the server's (usually) fixed port. It is 
+   has the SYN (synchronize) bit set, and has a randomly assigned SEQ (initial sequence) number, in this case 5432.
+2- The reply packet from the server has the ACK (acknowledge) bit set, with a number of 5433, and also has the 
+   SYN bit set with its own random SYN value, in this case 6543. This packet may already contain data in 
+   addition to the handshake information (all subsequent packets may contain data).
+3- The third packet is the ACK to the server's first SYN, with the number 6544.
+4- Going forward, all packets are ACK packets sent to the other party so that every
+   packet has a unique sequence number and a direction.
+
+
+
+
